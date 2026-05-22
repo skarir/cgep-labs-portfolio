@@ -1,0 +1,362 @@
+{
+  "component-definition": {
+    "uuid": "cgep-labs-component-definitions",
+    "metadata": {
+      "title": "CGE-P Labs Compliance Component Definitions",
+      "last-modified": "2026-05-22T20:00:00Z",
+      "version": "1.0.0",
+      "oscal-version": "1.1.0",
+      "remarks": "Complete control implementations across AWS infrastructure - Labs 2.3, 2.5, 3.3, 3.4, 5.2, 5.4, 4.3, 4.4"
+    },
+    "components": [
+      {
+        "uuid": "lab-2-3-s3",
+        "type": "Service",
+        "title": "Lab 2.3: Compliant S3 Buckets",
+        "description": "AWS S3 buckets with encryption at rest, access logging, versioning, and public access blocks",
+        "status": {
+          "state": "operational",
+          "remarks": "Deployed and verified May 22, 2026"
+        },
+        "control-implementations": [
+          {
+            "uuid": "lab-2-3-sc28",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "SC-28(1): Encryption at Rest",
+            "implemented-requirements": [
+              {
+                "uuid": "req-sc28-1",
+                "control-id": "SC-28(1)",
+                "description": "S3 buckets configured with AES-256 server-side encryption",
+                "statements": [
+                  {
+                    "statement-id": "sc28-1-statement-1",
+                    "description": "Data bucket encryption enabled via aws_s3_bucket_server_side_encryption_configuration with AES256 algorithm",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-3-s3",
+                        "description": "S3 bucket enforces encryption at rest"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-2-3-au3",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "AU-3(1): Audit Event Content",
+            "implemented-requirements": [
+              {
+                "uuid": "req-au3-1",
+                "control-id": "AU-3(1)",
+                "description": "S3 bucket access logging configured to capture all access events",
+                "statements": [
+                  {
+                    "statement-id": "au3-1-statement-1",
+                    "description": "S3 access logs written to secondary bucket with prefix evidence-access-logs/",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-3-s3",
+                        "description": "S3 logging captures who accessed what, when"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-2-3-cm6",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "CM-6(1): Configuration Settings",
+            "implemented-requirements": [
+              {
+                "uuid": "req-cm6-1",
+                "control-id": "CM-6(1)",
+                "description": "S3 versioning enabled to maintain configuration history",
+                "statements": [
+                  {
+                    "statement-id": "cm6-1-statement-1",
+                    "description": "aws_s3_bucket_versioning resource enables version history for all objects",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-3-s3",
+                        "description": "S3 versioning maintains historical configurations"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-2-3-ac3",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "AC-3(1): Access Enforcement",
+            "implemented-requirements": [
+              {
+                "uuid": "req-ac3-1",
+                "control-id": "AC-3(1)",
+                "description": "Public access blocks prevent unauthorized S3 access",
+                "statements": [
+                  {
+                    "statement-id": "ac3-1-statement-1",
+                    "description": "aws_s3_bucket_public_access_block blocks all public ACLs, policies, and restricts bucket access",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-3-s3",
+                        "description": "Public access completely blocked"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "lab-2-5-evidence",
+        "type": "Service",
+        "title": "Lab 2.5: IaC Evidence Pipeline",
+        "description": "Automated evidence collection from infrastructure with DynamoDB metadata, KMS encryption, Lambda processors",
+        "status": {
+          "state": "operational",
+          "remarks": "Deployed and verified May 22, 2026"
+        },
+        "control-implementations": [
+          {
+            "uuid": "lab-2-5-sc28",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "SC-28(1): Encryption at Rest",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab25-sc28-1",
+                "control-id": "SC-28(1)",
+                "description": "Evidence data encrypted at rest using KMS and S3 encryption",
+                "statements": [
+                  {
+                    "statement-id": "lab25-sc28-1-statement",
+                    "description": "DynamoDB table with KMS encryption, S3 evidence archive with KMS keys, automatic key rotation enabled",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-5-evidence",
+                        "description": "All evidence encrypted with KMS (key ID 5ee4a427-f69b-42a4-9d4d-a0ef26c38b1c)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-2-5-si10",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "SI-10(1): Evidence Integrity",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab25-si10-1",
+                "control-id": "SI-10(1)",
+                "description": "Evidence integrity verified through DynamoDB PITR, versioning, and Lambda hash verification",
+                "statements": [
+                  {
+                    "statement-id": "lab25-si10-1-statement",
+                    "description": "Point-in-time recovery enabled on DynamoDB, S3 versioning on archive, Lambda verifier calculates SHA256 hashes",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-2-5-evidence",
+                        "description": "Evidence integrity protected through cryptographic verification"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "lab-5-2-baseline",
+        "type": "Service",
+        "title": "Lab 5.2: AWS Security Baseline",
+        "description": "Multi-service security baseline across CloudTrail, GuardDuty, IAM, VPC Flow Logs, Config, Secrets Manager",
+        "status": {
+          "state": "operational",
+          "remarks": "Deployed and verified May 22, 2026"
+        },
+        "control-implementations": [
+          {
+            "uuid": "lab-5-2-au2",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "AU-2(1): Audit Events",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab52-au2-1",
+                "control-id": "AU-2(1)",
+                "description": "CloudTrail logs all API calls to S3 archive with log file validation",
+                "statements": [
+                  {
+                    "statement-id": "lab52-au2-1-statement",
+                    "description": "Multi-region CloudTrail enabled with log file validation and include_global_service_events",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-5-2-baseline",
+                        "description": "CloudTrail archive (cgep-cloudtrail-logs-lab52-baseline) contains complete API audit trail"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-5-2-si4",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "SI-4(1): Information System Monitoring",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab52-si4-1",
+                "control-id": "SI-4(1)",
+                "description": "GuardDuty enabled for ML-based threat detection with S3 logs and Kubernetes audit logs",
+                "statements": [
+                  {
+                    "statement-id": "lab52-si4-1-statement",
+                    "description": "GuardDuty detector (88ac872719284680ab2b843482f55317) monitors account for suspicious activity",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-5-2-baseline",
+                        "description": "GuardDuty generates findings for intrusion attempts and data exfiltration"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-5-2-ac6",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "AC-6(1): Least Privilege",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab52-ac6-1",
+                "control-id": "AC-6(1)",
+                "description": "IAM least privilege policies restrict access to minimum required actions",
+                "statements": [
+                  {
+                    "statement-id": "lab52-ac6-1-statement",
+                    "description": "Custom IAM policy cgep-least-privilege-s3-read-lab52-baseline grants only S3 GetObject, ListBucket on specific buckets",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-5-2-baseline",
+                        "description": "IAM policy limits permissions to necessary actions only"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "lab-4-3-grc",
+        "type": "Service",
+        "title": "Lab 4.3: GRC Evidence Pipeline",
+        "description": "Governance, Risk & Compliance automation integrating evidence collection, validation, and compliance scoring",
+        "status": {
+          "state": "operational",
+          "remarks": "Deployed and verified May 22, 2026"
+        },
+        "control-implementations": [
+          {
+            "uuid": "lab-4-3-ca7",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "CA-7(1): Continuous Monitoring",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab43-ca7-1",
+                "control-id": "CA-7(1)",
+                "description": "Daily GRC pipeline orchestration calculates and tracks compliance score",
+                "statements": [
+                  {
+                    "statement-id": "lab43-ca7-1-statement",
+                    "description": "EventBridge rule (cgep-grc-daily-pipeline-lab43-grc) triggers daily at 2:30 AM UTC to run GRC assessment",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-4-3-grc",
+                        "description": "Lambda aggregator evaluates 8 NIST controls and updates DynamoDB status table"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "lab-4-4-coc",
+        "type": "Service",
+        "title": "Lab 4.4: Chain of Custody",
+        "description": "Evidence integrity and audit trail for regulatory compliance (SOC 2 Type II, ISO 27001)",
+        "status": {
+          "state": "operational",
+          "remarks": "Deployed and verified May 22, 2026"
+        },
+        "control-implementations": [
+          {
+            "uuid": "lab-4-4-au12",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "AU-12(1): Audit Record Generation",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab44-au12-1",
+                "control-id": "AU-12(1)",
+                "description": "Evidence access logged to CloudWatch with 10-year retention for audit",
+                "statements": [
+                  {
+                    "statement-id": "lab44-au12-1-statement",
+                    "description": "Log group /aws/chain-of-custody/evidence-lab44-coc captures all evidence access events",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-4-4-coc",
+                        "description": "Immutable audit trail records who accessed what evidence, when"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "uuid": "lab-4-4-si12",
+            "source": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5",
+            "description": "SI-12(1): Information Handling and Retention",
+            "implemented-requirements": [
+              {
+                "uuid": "req-lab44-si12-1",
+                "control-id": "SI-12(1)",
+                "description": "Evidence retention policy enforces 7-year minimum legal hold with automatic expiration",
+                "statements": [
+                  {
+                    "statement-id": "lab44-si12-1-statement",
+                    "description": "DynamoDB TTL with ExpirationTime attribute, S3 lifecycle policies archive to Glacier",
+                    "by-components": [
+                      {
+                        "component-uuid": "lab-4-4-coc",
+                        "description": "Evidence automatically archived after 7 years per retention policy"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

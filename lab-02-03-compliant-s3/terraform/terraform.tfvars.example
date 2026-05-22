@@ -1,0 +1,18 @@
+# Lab 2.3: First Compliant Resource (AWS S3)
+# Example Terraform Variables File
+#
+# Instructions:
+# 1. Copy this file to terraform.tfvars
+# 2. Update the bucket names with your own unique names
+# 3. Run: terraform init, terraform plan, terraform apply
+
+aws_region  = "us-east-1"
+environment = "cgep-lab"
+
+# S3 bucket names MUST be globally unique across AWS
+# Replace "sunil" with your own identifier
+data_bucket_name    = "cgep-lab-compliant-data-sunil-2026"
+logging_bucket_name = "cgep-lab-logs-sunil-2026"
+
+# MFA delete requires an AWS MFA device to be configured
+enable_mfa_delete = false

@@ -1,0 +1,82 @@
+{
+  "format_version": "1.0",
+  "terraform_version": "1.6.0",
+  "resource_changes": [
+    {
+      "address": "aws_s3_bucket.data_bucket",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "data_bucket",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "bucket": "cgep-lab-data-sunil-20260522-191258"
+        }
+      }
+    },
+    {
+      "address": "aws_s3_bucket_server_side_encryption_configuration.data_encryption",
+      "mode": "managed",
+      "type": "aws_s3_bucket_server_side_encryption_configuration",
+      "name": "data_encryption",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "bucket": "cgep-lab-data-sunil-20260522-191258",
+          "rule": [
+            {
+              "apply_server_side_encryption_by_default": [
+                {
+                  "sse_algorithm": "AES256"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "address": "aws_s3_bucket_public_access_block.data_block",
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "data_block",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "block_public_acls": true,
+          "block_public_policy": true,
+          "ignore_public_acls": true,
+          "restrict_public_buckets": true
+        }
+      }
+    },
+    {
+      "address": "aws_s3_bucket_versioning.data_versioning",
+      "mode": "managed",
+      "type": "aws_s3_bucket_versioning",
+      "name": "data_versioning",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "versioning_configuration": [
+            {
+              "status": "Enabled"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

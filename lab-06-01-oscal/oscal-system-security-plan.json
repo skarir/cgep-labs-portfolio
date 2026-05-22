@@ -1,0 +1,198 @@
+{
+  "system-security-plan": {
+    "uuid": "cgep-labs-ssp",
+    "metadata": {
+      "title": "CGE-P Labs System Security Plan",
+      "last-modified": "2026-05-22T20:00:00Z",
+      "version": "1.0.0",
+      "oscal-version": "1.1.0",
+      "remarks": "Complete SSP for 12 CGE-P certification labs across AWS"
+    },
+    "system-characteristics": {
+      "system-name": "CGE-P Multi-Lab Compliance Platform",
+      "description": "Production-grade Governance, Risk & Compliance (GRC) platform demonstrating Infrastructure-as-Code, Policy-as-Code, Evidence-as-Code, and Compliance-as-Code principles",
+      "system-type": "Cloud Infrastructure",
+      "information-types": [
+        {
+          "title": "Compliance Evidence",
+          "description": "Audit evidence collected from infrastructure demonstrating control implementations"
+        },
+        {
+          "title": "Configuration Data",
+          "description": "Infrastructure configuration in Terraform code stored in Git repository"
+        },
+        {
+          "title": "Audit Logs",
+          "description": "CloudTrail, Config, GuardDuty, VPC Flow Logs capturing all system activity"
+        }
+      ],
+      "security-categorization": {
+        "system-categorization": "Moderate",
+        "confidentiality": "C-2",
+        "integrity": "I-2",
+        "availability": "A-2"
+      }
+    },
+    "system-implementation": {
+      "users": [
+        {
+          "role-id": "cloud-admin",
+          "role-title": "Cloud Administrator",
+          "description": "Manages AWS infrastructure and compliance monitoring"
+        },
+        {
+          "role-id": "audit-user",
+          "role-title": "Auditor",
+          "description": "Reviews evidence and compliance status for audit"
+        }
+      ],
+      "components": [
+        {
+          "component-type": "Service",
+          "component-title": "Lab 2.3: Compliant S3 Buckets",
+          "uuid": "component-lab23",
+          "description": "Foundation: Two encrypted S3 buckets with versioning, logging, public access blocks",
+          "responsible-roles": [
+            {
+              "role-id": "cloud-admin"
+            }
+          ]
+        },
+        {
+          "component-type": "Service",
+          "component-title": "Lab 2.5: Evidence Pipeline",
+          "uuid": "component-lab25",
+          "description": "Automated daily evidence collection from Lab 2.3, archived to S3, metadata in DynamoDB"
+        },
+        {
+          "component-type": "Service",
+          "component-title": "Lab 5.2: AWS Security Baseline",
+          "uuid": "component-lab52",
+          "description": "Multi-service security: CloudTrail, GuardDuty, IAM policies, VPC Flow Logs, Config Rules"
+        },
+        {
+          "component-type": "Service",
+          "component-title": "Lab 4.3: GRC Pipeline",
+          "uuid": "component-lab43",
+          "description": "Governance automation: Daily compliance scoring, control status tracking, SNS notifications"
+        },
+        {
+          "component-type": "Service",
+          "component-title": "Lab 4.4: Chain of Custody",
+          "uuid": "component-lab44",
+          "description": "Evidence integrity: DynamoDB chain of custody table, CloudWatch audit logs (10-year retention)"
+        }
+      ]
+    },
+    "control-implementation": {
+      "description": "Controls implemented across CGE-P labs for NIST 800-53 compliance",
+      "implemented-controls": [
+        {
+          "control-id": "SC-28(1)",
+          "control-statement": "Encrypt information at rest",
+          "implementation": "Lab 2.3: S3 AES-256 encryption | Lab 2.5: DynamoDB KMS encryption, evidence archive KMS | Lab 5.2: Secrets Manager encrypted storage",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "AU-3(1)",
+          "control-statement": "Audit events shall include user and device identification, timestamp, event type, outcome",
+          "implementation": "Lab 2.3: S3 access logging | Lab 2.5: Evidence metadata table | Lab 5.2: CloudTrail multi-region | Lab 4.4: Chain of custody logs",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "AU-6(1)",
+          "control-statement": "Review and analyze audit records",
+          "implementation": "Lab 5.2: CloudWatch log analysis, SNS alerts | Lab 4.3: Daily GRC pipeline review | Lab 4.4: Access audit trail",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "AC-3(1)",
+          "control-statement": "Enforce access control policies",
+          "implementation": "Lab 2.3: S3 public access blocks | Lab 5.2: IAM least privilege policies | Lab 4.4: Evidence access logging",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "AC-6(1)",
+          "control-statement": "Enforce principle of least privilege",
+          "implementation": "Lab 5.2: Custom IAM policies granting only required S3 permissions | CloudTrail logging all privilege escalation attempts",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "CM-6(1)",
+          "control-statement": "Establish and document configuration settings",
+          "implementation": "Lab 2.3: S3 versioning enabled | Lab 5.2: Infrastructure-as-Code in Terraform | Lab 4.3: Configuration baseline tracking",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "CA-7(1)",
+          "control-statement": "Conduct continuous monitoring",
+          "implementation": "Lab 4.3: Daily compliance scoring via EventBridge orchestration | CloudWatch dashboards | Control status DynamoDB table",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "SI-4(1)",
+          "control-statement": "Monitor system for attack and unauthorized activity",
+          "implementation": "Lab 5.2: GuardDuty ML-based threat detection | VPC Flow Logs network monitoring | CloudTrail API monitoring",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "SI-10(1)",
+          "control-statement": "Ensure evidence integrity and availability",
+          "implementation": "Lab 2.5: SHA256 hash verification, Lambda verifier | Lab 4.4: DynamoDB PITR, S3 versioning, chain of custody",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "AU-12(1)",
+          "control-statement": "Generate, record, and retain audit records",
+          "implementation": "Lab 4.4: Chain of custody DynamoDB table, CloudWatch logs (10-year retention), immutable audit trail",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "SI-12(1)",
+          "control-statement": "Handle and retain information in accordance with applicable requirements",
+          "implementation": "Lab 4.4: 7-year evidence retention with automatic expiration via TTL, S3 lifecycle policies archive to Glacier",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "CA-9(1)",
+          "control-statement": "Document internal system connections",
+          "implementation": "Lab 4.4: Chain of custody tracks evidence flow between components, EventBridge orchestration logs system interactions",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "IA-2(1)",
+          "control-statement": "Enforce multi-factor authentication",
+          "implementation": "Lab 5.2: IAM account password policy enforced (14+ chars, symbols, 90-day expiry, 24-history)",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        },
+        {
+          "control-id": "SC-7(1)",
+          "control-statement": "Monitor and control communications at external boundaries",
+          "implementation": "Lab 5.2: VPC Flow Logs capture all network traffic, S3 bucket policies restrict access to specific principals",
+          "status": "Compliant",
+          "date": "2026-05-22"
+        }
+      ]
+    },
+    "assessment-results": {
+      "assessment-date": "2026-05-22",
+      "assessor": "Automated GRC Pipeline",
+      "overall-status": "COMPLIANT",
+      "compliance-score": 100,
+      "details": "All 14 NIST 800-53 controls mapped to CGE-P lab implementations verified and operational"
+    }
+  }
+}

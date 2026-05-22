@@ -1,0 +1,18 @@
+# Lab 5.2: AWS Security Baseline
+# Configuration variables
+
+aws_region                = "us-east-1"
+environment               = "cgep-lab"
+lab_identifier            = "lab52-baseline"
+
+# CloudTrail retention
+cloudtrail_retention_days = 90
+
+# Config snapshots frequency
+config_snapshot_frequency = "Six_Hours"
+
+# VPC Flow Logs retention
+vpc_flow_log_retention    = 30
+
+# Secrets Manager recovery window
+secret_recovery_window    = 7

@@ -1,0 +1,24 @@
+# Lab 2.5: IaC as Compliance Evidence
+# Terraform Variables Configuration
+
+aws_region  = "us-east-1"
+environment = "cgep-lab"
+
+# Reference the S3 bucket from Lab 2.3
+# Update this to match your deployed Lab 2.3 bucket name
+lab23_data_bucket_name = "cgep-lab-data-sunil-20260522-191258"
+
+# Unique identifier for this deployment
+lab_identifier = "lab25-evidence"
+
+# Evidence retention period (in days) - default 7 years (2555 days)
+evidence_retention_days = 2555
+
+# Lambda function timeout (3-900 seconds)
+lambda_timeout = 60
+
+# Enable point-in-time recovery for DynamoDB evidence table
+enable_point_in_time_recovery = true
+
+# CloudWatch log retention (in days)
+log_retention_days = 90
